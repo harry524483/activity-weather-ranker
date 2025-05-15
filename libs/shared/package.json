@@ -1,5 +1,5 @@
 {
-  "name": "@activity-weather-ranker/models",
+  "name": "@activity-weather-ranker/shared",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -15,7 +15,7 @@
   },
   "dependencies": {},
   "nx": {
-    "name": "models",
+    "name": "shared",
     "targets": {
       "codegen": {
         "command": "npx graphql-codegen --config {projectRoot}/codegen.ts"

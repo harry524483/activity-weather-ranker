@@ -26,7 +26,7 @@
           "watchDepsName": "watch-deps"
         }
       },
-      "exclude": ["libs/models/*"]
+      "exclude": ["libs/shared/*"]
     },
     {
       "plugin": "@nx/eslint/plugin",
@@ -36,7 +36,7 @@
     },
     {
       "plugin": "@nx/js/typescript",
-      "include": ["libs/models/*"],
+      "include": ["libs/shared/*"],
       "options": {
         "typecheck": {
           "targetName": "typecheck"

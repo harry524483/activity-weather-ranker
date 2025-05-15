@@ -1,13 +1,13 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-    schema: 'libs/models/src/schema.graphql',
+    schema: 'libs/shared/src/models/*.graphql',
     generates: {
         'apps/api/src/__generated__/resolvers.ts': {
             plugins: ['add', 'typescript-resolvers'],
             config: {
                 useIndexSignature: true,
-                content: 'import * as types from "@activity-weather-ranker/models"',
+                content: 'import * as types from "@activity-weather-ranker/shared"',
                 namespacedImportName: 'types',
             },
         },

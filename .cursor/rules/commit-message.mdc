@@ -1,0 +1,58 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+## 📝 Commit Message Guidelines
+
+All commit messages **must follow the Conventional Commit format** and be **clear and concise**. This helps keep project history readable and allows tools to automate release notes, changelogs, and more.
+
+### ✅ Format
+
+<type>[optional scope]: <short summary>
+
+- Use **lowercase** for type and scope.
+- Use the **imperative mood** in the summary (e.g., "add", not "added" or "adds").
+- Keep the **summary under 72 characters**.
+- If needed, add more context in the **commit body**, separated by a blank line.
+
+#### Example:
+
+feat(auth): add support for multi-factor authentication
+
+This change adds a secondary authentication step using OTP via email.
+It also updates the login flow to conditionally prompt for MFA if enabled.
+
+
+---
+
+### 🔤 Allowed Commit Types
+
+| Type       | Description                                                   |
+|------------|---------------------------------------------------------------|
+| `feat`     | A new feature                                                 |
+| `fix`      | A bug fix                                                     |
+| `docs`     | Documentation changes only                                    |
+| `style`    | Code style changes (formatting, spacing, etc.)               |
+| `refactor` | Code refactoring that doesn’t fix a bug or add a feature      |
+| `perf`     | Performance improvements                                      |
+| `test`     | Adding or updating tests                                      |
+| `chore`    | Changes to the build process, tooling, or dependencies        |
+| `revert`   | Revert a previous commit                                      |
+
+---
+
+### 💡 Tips
+
+- Be specific in your summaries.  
+  ✅ `fix(auth): handle expired tokens`  
+  ❌ `fix: bug`
+
+- Use the body to explain **why** a change was made, not just what was done.
+
+- Add metadata (if applicable) like:
+
+
+
+
+

@@ -1,6 +1,6 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { Set } from '@activity-weather-ranker/models';
+import { Set } from '@activity-weather-ranker/shared';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Resolvers } from './__generated__/resolvers';
@@ -9,7 +9,7 @@ import { Resolvers } from './__generated__/resolvers';
 // root directory, which is the current working directory
 // if the server is executed using `npm run`.
 const typeDefs = readFileSync(
-    join('libs/models/src', 'schema.graphql'),
+    join('libs/shared/src', 'schema.graphql'),
     { encoding: 'utf-8' }
 );
 
