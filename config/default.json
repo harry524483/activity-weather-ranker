@@ -1,5 +1,11 @@
 {
   "api": {
-    "port": 4000
+    "port": 4000,
+    "weatherApi": {
+      "baseUrl": "https://api.open-meteo.com/v1"
+    },
+    "geocodingApi": {
+      "baseUrl": "https://geocoding-api.open-meteo.com/v1"
+    }
   }
 }

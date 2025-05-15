@@ -18,7 +18,7 @@
           "format": [
             "esm"
           ],
-          "bundle": false,
+          "bundle": true,
           "main": "apps/api/src/main.ts",
           "tsConfig": "apps/api/tsconfig.app.json",
           "assets": [

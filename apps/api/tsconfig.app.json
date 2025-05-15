@@ -9,7 +9,13 @@
     "outDir": "dist",
     "types": ["node"],
     "rootDir": "src",
-    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
+    "baseUrl": "src",
+    "paths": {
+      "~api": ["main.ts"],
+      "~api/common": ["common/index.ts"],
+      "~api/activity-ranking": ["features/activity-ranking/index.ts"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["eslint.config.js", "eslint.config.cjs", "eslint.config.mjs"]

@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Type Alias Over Interface Rule
+- Always use `type` instead of `interface` for type definitions.
+- Only use `interface` if you are extending or overwriting a 3rd party interface.
+- This rule is always ON.
