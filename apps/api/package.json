@@ -2,6 +2,7 @@
   "name": "@activity-weather-ranker/api",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "nx": {
     "name": "api",
     "targets": {
@@ -15,7 +16,7 @@
           "platform": "node",
           "outputPath": "apps/api/dist",
           "format": [
-            "cjs"
+            "esm"
           ],
           "bundle": false,
           "main": "apps/api/src/main.ts",
@@ -61,6 +62,9 @@
             "buildTarget": "api:build:production"
           }
         }
+      },
+      "codegen": {
+        "command": "npx graphql-codegen --config {projectRoot}/codegen.ts"
       }
     }
   }

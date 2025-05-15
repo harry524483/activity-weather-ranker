@@ -8,6 +8,15 @@
     },
     {
       "path": "./apps/api"
+    },
+    {
+      "path": "./libs/models"
+    },
+    {
+      "path": "./apps/frontend"
+    },
+    {
+      "path": "./libs/feature-sets"
     }
   ]
 }
