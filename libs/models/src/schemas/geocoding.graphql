@@ -1,0 +1,7 @@
+type GeocodingResult {
+  id: Int!
+  name: String!
+  latitude: Float!
+  longitude: Float!
+  country: String!
+}

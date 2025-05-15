@@ -1,0 +1,17 @@
+type WeatherForecastDaily {
+  time: [String!]!
+  temperature_2m_max: [Float!]!
+  temperature_2m_min: [Float!]!
+  precipitation_sum: [Float!]!
+  wind_speed_10m_max: [Float!]!
+  wind_direction_10m_dominant: [Int!]!
+  uv_index_max: [Float!]!
+  snowfall_sum: [Float!]!
+  snow_depth_max: [Float!]!
+}
+
+type WeatherForecast {
+  latitude: Float!
+  longitude: Float!
+  daily: WeatherForecastDaily!
+}
