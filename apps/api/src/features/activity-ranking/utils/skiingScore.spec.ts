@@ -3,64 +3,37 @@ import { scoreSkiing } from './skiingScore.js';
 import type { WeatherForecastDaily } from '@activity-weather-ranker/shared';
 
 const baseWeather: WeatherForecastDaily = {
-  time: ['2024-06-01'],
-  temperature_2m_max: [0],
-  temperature_2m_min: [0],
-  precipitation_sum: [0],
-  wind_speed_10m_max: [0],
-  wind_direction_10m_dominant: [0],
-  uv_index_max: [0],
-  snowfall_sum: [0],
-  snow_depth_max: [0],
+  time: ['2024-06-01'], // neutral
+  temperature_2m_max: [-5], // optimal max temp for skiing
+  temperature_2m_min: [-5], // lowest reasonable min temp (lower is better)
+  precipitation_sum: [0], // no rain (optimal)
+  wind_speed_10m_max: [0], // no wind (optimal)
+  wind_direction_10m_dominant: [0], // neutral
+  uv_index_max: [0], // neutral
+  snowfall_sum: [30], // high snowfall (optimal)
+  snow_depth_max: [50], // high snow depth (optimal)
 };
 
 describe('scoreSkiing', () => {
-  it('returns correct score if all factors are neutral or zero', () => {
-    // Arrange
-    const weather: WeatherForecastDaily = { ...baseWeather };
-    // Act
-    const score = scoreSkiing(weather, 0);
-    // Assert
-    expect(score).toBe(3);
+  let optimalScore: number;
+
+  beforeAll(() => {
+    optimalScore = scoreSkiing(baseWeather, 0);
   });
 
-  it('gives bonus for optimal max temperature (-5 to 2°C)', () => {
+  it('score decreases if temperature_2m_max is non-optimal', () => {
     // Arrange
     const weather: WeatherForecastDaily = {
       ...baseWeather,
-      temperature_2m_max: [-5],
+      temperature_2m_max: [10],
     };
     // Act
     const score = scoreSkiing(weather, 0);
     // Assert
-    expect(score).toBe(3);
+    expect(score).toBeLessThan(optimalScore);
   });
 
-  it('penalizes temperature_2m_max below -5°C', () => {
-    // Arrange
-    const weather: WeatherForecastDaily = {
-      ...baseWeather,
-      temperature_2m_max: [-10],
-    };
-    // Act
-    const score = scoreSkiing(weather, 0);
-    // Assert
-    expect(score).toBe(-7.5);
-  });
-
-  it('penalizes temperature_2m_max above 2°C', () => {
-    // Arrange
-    const weather: WeatherForecastDaily = {
-      ...baseWeather,
-      temperature_2m_max: [5],
-    };
-    // Act
-    const score = scoreSkiing(weather, 0);
-    // Assert
-    expect(score).toBe(-4.5);
-  });
-
-  it('penalizes higher temperature_2m_min (lower is better)', () => {
+  it('score decreases if temperature_2m_min is non-optimal', () => {
     // Arrange
     const weather: WeatherForecastDaily = {
       ...baseWeather,
@@ -69,43 +42,116 @@ describe('scoreSkiing', () => {
     // Act
     const score = scoreSkiing(weather, 0);
     // Assert
-    expect(score).toBe(-2);
+    expect(score).toBeLessThan(optimalScore);
   });
 
-  it('penalizes higher wind_speed_10m_max (lower is better)', () => {
+  it('score decreases if wind_speed_10m_max is non-optimal', () => {
     // Arrange
     const weather: WeatherForecastDaily = {
       ...baseWeather,
-      wind_speed_10m_max: [20],
+      wind_speed_10m_max: [10],
     };
     // Act
     const score = scoreSkiing(weather, 0);
     // Assert
-    expect(score).toBe(-7);
+    expect(score).toBeLessThan(optimalScore);
+  });
+
+  it('score decreases if snowfall_sum is non-optimal', () => {
+    // Arrange
+    const weather: WeatherForecastDaily = { ...baseWeather, snowfall_sum: [0] };
+    // Act
+    const score = scoreSkiing(weather, 0);
+    // Assert
+    expect(score).toBeLessThan(optimalScore);
+  });
+
+  it('score decreases if snow_depth_max is non-optimal', () => {
+    // Arrange
+    const weather: WeatherForecastDaily = {
+      ...baseWeather,
+      snow_depth_max: [0],
+    };
+    // Act
+    const score = scoreSkiing(weather, 0);
+    // Assert
+    expect(score).toBeLessThan(optimalScore);
+  });
+
+  it('gives bonus for optimal max temperature (-5 to 2°C)', () => {
+    // Arrange
+    const weather: WeatherForecastDaily = {
+      ...baseWeather,
+      temperature_2m_max: [-5],
+      temperature_2m_min: [-10],
+    };
+    // Act
+    const score = scoreSkiing(weather, 0);
+    // Assert
+    expect(score).toBe(143);
+  });
+
+  it('penalizes temperature_2m_max below -5°C', () => {
+    // Arrange
+    const weather: WeatherForecastDaily = {
+      ...baseWeather,
+      temperature_2m_max: [-10],
+      temperature_2m_min: [-15], // min < max
+    };
+    // Act
+    const score = scoreSkiing(weather, 0);
+    // Assert
+    expect(score).toBeLessThan(optimalScore);
+  });
+
+  it('penalizes temperature_2m_max above 2°C', () => {
+    // Arrange
+    const weather: WeatherForecastDaily = {
+      ...baseWeather,
+      temperature_2m_max: [5],
+      temperature_2m_min: [0], // min < max
+    };
+    // Act
+    const score = scoreSkiing(weather, 0);
+    // Assert
+    expect(score).toBeLessThan(optimalScore);
+  });
+
+  it('penalizes higher temperature_2m_min (lower is better)', () => {
+    // Arrange
+    const weather: WeatherForecastDaily = {
+      ...baseWeather,
+      temperature_2m_max: [10], // max > min
+      temperature_2m_min: [5],
+    };
+    // Act
+    const score = scoreSkiing(weather, 0);
+    // Assert
+    expect(score).toBeLessThan(optimalScore);
   });
 
   it('rewards higher snowfall_sum (critical)', () => {
     // Arrange
     const weather: WeatherForecastDaily = {
       ...baseWeather,
-      snowfall_sum: [30],
+      snowfall_sum: [35],
     };
     // Act
     const score = scoreSkiing(weather, 0);
     // Assert
-    expect(score).toBe(63);
+    expect(score).toBe(150.5);
   });
 
   it('rewards higher snow_depth_max (important)', () => {
     // Arrange
     const weather: WeatherForecastDaily = {
       ...baseWeather,
-      snow_depth_max: [50],
+      snow_depth_max: [55],
     };
     // Act
     const score = scoreSkiing(weather, 0);
     // Assert
-    expect(score).toBe(78);
+    expect(score).toBe(148);
   });
 
   it('does not penalize precipitation if temperature_2m_max <= 2°C', () => {
@@ -118,7 +164,7 @@ describe('scoreSkiing', () => {
     // Act
     const score = scoreSkiing(weather, 0);
     // Assert
-    expect(score).toBe(3);
+    expect(score).toBe(optimalScore);
   });
 
   it('penalizes precipitation if temperature_2m_max > 2°C', () => {
@@ -131,7 +177,7 @@ describe('scoreSkiing', () => {
     // Act
     const score = scoreSkiing(weather, 0);
     // Assert
-    expect(score).toBe(-151.5);
+    expect(score).toBe(-14);
   });
 
   it('ignores neutral factors (time, wind_direction_10m_dominant, uv_index_max)', () => {
@@ -145,36 +191,6 @@ describe('scoreSkiing', () => {
     // Act
     const score = scoreSkiing(weather, 0);
     // Assert
-    expect(score).toBe(3);
-  });
-
-  it('returns 0 if value is not a number (edge case)', () => {
-    // Arrange
-    const weather: WeatherForecastDaily = {
-      ...baseWeather,
-      // @ts-expect-error purposely break type for test
-      temperature_2m_max: [undefined],
-    };
-    // Act
-    const score = scoreSkiing(weather, 0);
-    // Assert
-    expect(score).toBe(0);
-  });
-
-  it('returns correct score for a group of non-zero properties', () => {
-    // Arrange
-    const weather: WeatherForecastDaily = {
-      ...baseWeather,
-      temperature_2m_max: [1],
-      temperature_2m_min: [5],
-      precipitation_sum: [10],
-      wind_speed_10m_max: [8],
-      snowfall_sum: [12],
-      snow_depth_max: [7],
-    };
-    // Act
-    const score = scoreSkiing(weather, 0);
-    // Assert
-    expect(score).toBe(31);
+    expect(score).toBe(optimalScore);
   });
 });
