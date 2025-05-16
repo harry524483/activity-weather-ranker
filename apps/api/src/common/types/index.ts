@@ -11,3 +11,7 @@ export type ApolloContext = {
   geocodingService: GeocodingService;
   weatherService: WeatherService;
 };
+
+export type ApiConfig = {
+  baseUrl: string;
+};

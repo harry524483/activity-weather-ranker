@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { WeatherForecast } from '@activity-weather-ranker/shared';
-import { ApiConfig } from '../types';
+import type { ApiConfig } from '~api/common';
 import { NoDailyWeatherDataError } from '../exceptions/NoDailyWeatherDataError';
 
 export class WeatherService {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GeocodingResult } from '@activity-weather-ranker/shared';
-import { ApiConfig } from '../types';
+import type { ApiConfig } from '~api/common';
 import { NoGeocodingResultsError } from '../exceptions/NoGeocodingResultsError';
 
 export class GeocodingService {
