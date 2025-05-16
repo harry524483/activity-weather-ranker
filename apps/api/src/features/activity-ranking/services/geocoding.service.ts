@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { GeocodingResult } from '@activity-weather-ranker/shared';
 import { ApiConfig } from '../types';
+import { NoGeocodingResultsError } from '../exceptions/NoGeocodingResultsError';
 
 export class GeocodingService {
   private baseUrl: string;
@@ -15,7 +16,9 @@ export class GeocodingService {
     const response = await axios.get(url);
     const data = response.data;
 
-    if (!data.results) return [];
+    if (!data || !data.results) {
+      throw new NoGeocodingResultsError('No geocoding results found');
+    }
 
     return data.results.map((item: GeocodingResult) => ({
       id: item.id,

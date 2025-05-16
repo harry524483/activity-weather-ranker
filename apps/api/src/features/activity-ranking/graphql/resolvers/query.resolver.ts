@@ -1,5 +1,4 @@
-import type { Resolvers } from '~api/common';
-import type { ApolloContext } from '~api';
+import type { Resolvers, ApolloContext } from '~api/common';
 
 export const resolvers: Resolvers<ApolloContext> = {
   Query: {

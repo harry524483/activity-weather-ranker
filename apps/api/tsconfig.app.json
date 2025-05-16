@@ -12,7 +12,6 @@
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "baseUrl": "src",
     "paths": {
-      "~api": ["main.ts"],
       "~api/common": ["common/index.ts"],
       "~api/activity-ranking": ["features/activity-ranking/index.ts"]
     }

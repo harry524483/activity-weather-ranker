@@ -1,4 +1,5 @@
 import { ApolloServer } from '@apollo/server';
+import { GraphQLError } from 'graphql';
 import { expressMiddleware } from '@as-integrations/express5';
 import cors from 'cors';
 import express from 'express';
@@ -10,11 +11,8 @@ import {
   WeatherService,
   resolvers as activityRankingResolvers,
 } from '~api/activity-ranking';
-
-export type ApolloContext = {
-  geocodingService: GeocodingService;
-  weatherService: WeatherService;
-};
+import { isCustomApiError } from '~api/common';
+import type { ApolloContext } from '~api/common';
 
 const app = express();
 
@@ -25,6 +23,20 @@ const typeDefs = mergeTypeDefs(
 const server = new ApolloServer<ApolloContext>({
   typeDefs,
   resolvers: [activityRankingResolvers],
+  formatError: (formattedError, error) => {
+    const code =
+      error instanceof GraphQLError && isCustomApiError(error.originalError)
+        ? error.originalError.code
+        : 'INTERNAL_SERVER_ERROR';
+
+    return {
+      ...formattedError,
+      extensions: {
+        ...formattedError.extensions,
+        code,
+      },
+    };
+  },
 });
 
 await server.start();

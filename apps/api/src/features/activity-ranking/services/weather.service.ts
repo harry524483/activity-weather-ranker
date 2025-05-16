@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { WeatherForecast } from '@activity-weather-ranker/shared';
 import { ApiConfig } from '../types';
+import { NoDailyWeatherDataError } from '../exceptions/NoDailyWeatherDataError';
 
 export class WeatherService {
   private baseUrl: string;
@@ -23,7 +24,9 @@ export class WeatherService {
     const response = await axios.get(url);
 
     const data = response.data;
-    if (!data.daily) return null;
+    if (!data || !data.daily) {
+      throw new NoDailyWeatherDataError('No daily weather data available');
+    }
 
     return {
       latitude: data.latitude,
