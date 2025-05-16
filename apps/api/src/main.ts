@@ -7,6 +7,7 @@ import { loadFilesSync } from '@graphql-tools/load-files';
 import { mergeTypeDefs } from '@graphql-tools/merge';
 import config from 'config';
 import {
+  ActivityRankingService,
   GeocodingService,
   WeatherService,
   resolvers as activityRankingResolvers,
@@ -48,7 +49,9 @@ app.use(
   expressMiddleware(server, {
     context: async () => ({
       geocodingService: new GeocodingService(config.get('api.geocodingApi')),
-      weatherService: new WeatherService(config.get('api.weatherApi')),
+      activityRankingService: new ActivityRankingService(
+        new WeatherService(config.get('api.weatherApi'))
+      ),
     }),
   })
 );

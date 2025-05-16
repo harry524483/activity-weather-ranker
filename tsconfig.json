@@ -4,9 +4,6 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/api-e2e"
-    },
-    {
       "path": "./apps/api"
     },
     {
@@ -14,9 +11,6 @@
     },
     {
       "path": "./apps/frontend"
-    },
-    {
-      "path": "./libs/feature-sets"
     }
   ]
 }

@@ -1,4 +1,4 @@
 type Query {
   searchGeocoding(location: String!): [GeocodingResult!]!
-  getWeatherByCoordinates(latitude: Float!, longitude: Float!): WeatherForecast
+  rankActivities(latitude: Float!, longitude: Float!): [ActivityRanking!]!
 }

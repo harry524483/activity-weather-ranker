@@ -5,8 +5,8 @@ export const resolvers: Resolvers<ApolloContext> = {
     searchGeocoding: async (_parent, args, context) => {
       return context.geocodingService.searchGeocoding(args.location);
     },
-    getWeatherByCoordinates: async (_parent, args, context) => {
-      return context.weatherService.getWeatherByCoordinates(
+    rankActivities: async (_parent, args, context) => {
+      return context.activityRankingService.rankActivities(
         args.latitude,
         args.longitude
       );

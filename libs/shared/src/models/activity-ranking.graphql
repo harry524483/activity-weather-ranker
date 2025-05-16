@@ -1,0 +1,6 @@
+type ActivityRanking {
+  date: String!
+  activity: String!
+  score: Int!
+  reason: String!
+}

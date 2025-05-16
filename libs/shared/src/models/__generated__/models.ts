@@ -14,6 +14,14 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type ActivityRanking = {
+  __typename?: 'ActivityRanking';
+  activity: Scalars['String']['output'];
+  date: Scalars['String']['output'];
+  reason: Scalars['String']['output'];
+  score: Scalars['Int']['output'];
+};
+
 export type GeocodingResult = {
   __typename?: 'GeocodingResult';
   country: Scalars['String']['output'];
@@ -25,12 +33,12 @@ export type GeocodingResult = {
 
 export type Query = {
   __typename?: 'Query';
-  getWeatherByCoordinates: Maybe<WeatherForecast>;
+  rankActivities: Array<ActivityRanking>;
   searchGeocoding: Array<GeocodingResult>;
 };
 
 
-export type QueryGetWeatherByCoordinatesArgs = {
+export type QueryRankActivitiesArgs = {
   latitude: Scalars['Float']['input'];
   longitude: Scalars['Float']['input'];
 };
@@ -38,24 +46,4 @@ export type QueryGetWeatherByCoordinatesArgs = {
 
 export type QuerySearchGeocodingArgs = {
   location: Scalars['String']['input'];
-};
-
-export type WeatherForecast = {
-  __typename?: 'WeatherForecast';
-  daily: WeatherForecastDaily;
-  latitude: Scalars['Float']['output'];
-  longitude: Scalars['Float']['output'];
-};
-
-export type WeatherForecastDaily = {
-  __typename?: 'WeatherForecastDaily';
-  precipitation_sum: Array<Scalars['Float']['output']>;
-  snow_depth_max: Array<Scalars['Float']['output']>;
-  snowfall_sum: Array<Scalars['Float']['output']>;
-  temperature_2m_max: Array<Scalars['Float']['output']>;
-  temperature_2m_min: Array<Scalars['Float']['output']>;
-  time: Array<Scalars['String']['output']>;
-  uv_index_max: Array<Scalars['Float']['output']>;
-  wind_direction_10m_dominant: Array<Scalars['Int']['output']>;
-  wind_speed_10m_max: Array<Scalars['Float']['output']>;
 };

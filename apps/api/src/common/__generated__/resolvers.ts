@@ -73,26 +73,32 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  ActivityRanking: ResolverTypeWrapper<types.ActivityRanking>;
   Boolean: ResolverTypeWrapper<types.Scalars['Boolean']['output']>;
   Float: ResolverTypeWrapper<types.Scalars['Float']['output']>;
   GeocodingResult: ResolverTypeWrapper<types.GeocodingResult>;
   Int: ResolverTypeWrapper<types.Scalars['Int']['output']>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<types.Scalars['String']['output']>;
-  WeatherForecast: ResolverTypeWrapper<types.WeatherForecast>;
-  WeatherForecastDaily: ResolverTypeWrapper<types.WeatherForecastDaily>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  ActivityRanking: types.ActivityRanking;
   Boolean: types.Scalars['Boolean']['output'];
   Float: types.Scalars['Float']['output'];
   GeocodingResult: types.GeocodingResult;
   Int: types.Scalars['Int']['output'];
   Query: {};
   String: types.Scalars['String']['output'];
-  WeatherForecast: types.WeatherForecast;
-  WeatherForecastDaily: types.WeatherForecastDaily;
+}>;
+
+export type ActivityRankingResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityRanking'] = ResolversParentTypes['ActivityRanking']> = ResolversObject<{
+  activity?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  reason?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  score?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type GeocodingResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['GeocodingResult'] = ResolversParentTypes['GeocodingResult']> = ResolversObject<{
@@ -105,34 +111,13 @@ export type GeocodingResultResolvers<ContextType = any, ParentType extends Resol
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  getWeatherByCoordinates?: Resolver<types.Maybe<ResolversTypes['WeatherForecast']>, ParentType, ContextType, RequireFields<types.QueryGetWeatherByCoordinatesArgs, 'latitude' | 'longitude'>>;
+  rankActivities?: Resolver<Array<ResolversTypes['ActivityRanking']>, ParentType, ContextType, RequireFields<types.QueryRankActivitiesArgs, 'latitude' | 'longitude'>>;
   searchGeocoding?: Resolver<Array<ResolversTypes['GeocodingResult']>, ParentType, ContextType, RequireFields<types.QuerySearchGeocodingArgs, 'location'>>;
 }>;
 
-export type WeatherForecastResolvers<ContextType = any, ParentType extends ResolversParentTypes['WeatherForecast'] = ResolversParentTypes['WeatherForecast']> = ResolversObject<{
-  daily?: Resolver<ResolversTypes['WeatherForecastDaily'], ParentType, ContextType>;
-  latitude?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  longitude?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type WeatherForecastDailyResolvers<ContextType = any, ParentType extends ResolversParentTypes['WeatherForecastDaily'] = ResolversParentTypes['WeatherForecastDaily']> = ResolversObject<{
-  precipitation_sum?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  snow_depth_max?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  snowfall_sum?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  temperature_2m_max?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  temperature_2m_min?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  time?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  uv_index_max?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  wind_direction_10m_dominant?: Resolver<Array<ResolversTypes['Int']>, ParentType, ContextType>;
-  wind_speed_10m_max?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type Resolvers<ContextType = any> = ResolversObject<{
+  ActivityRanking?: ActivityRankingResolvers<ContextType>;
   GeocodingResult?: GeocodingResultResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  WeatherForecast?: WeatherForecastResolvers<ContextType>;
-  WeatherForecastDaily?: WeatherForecastDailyResolvers<ContextType>;
 }>;
 
