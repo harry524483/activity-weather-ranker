@@ -1,9 +1,9 @@
 import {
-  importanceWeights,
   WeatherForecastDaily,
   FactorConfig,
   FactorScorerArgs,
 } from '@activity-weather-ranker/shared';
+import { scoreByConfig, optimalRangeScorer } from './activity-scoring-utils';
 
 const optimalTempRange = [-5, 2];
 
@@ -11,12 +11,7 @@ const skiingFactorConfig: Record<keyof WeatherForecastDaily, FactorConfig> = {
   time: { importance: 'neutral' },
   temperature_2m_max: {
     importance: 'important',
-    scorer: ({ value, weight }: FactorScorerArgs) => {
-      const [minTemp, maxTemp] = optimalTempRange;
-      if (value < minTemp) return -(minTemp - value) * weight;
-      if (value > maxTemp) return -(value - maxTemp) * weight;
-      return weight * 2; // Bonus for optimal range
-    },
+    scorer: optimalRangeScorer(optimalTempRange, 2),
   },
   temperature_2m_min: {
     importance: 'nice',
@@ -47,20 +42,5 @@ export function scoreSkiing(
   weather: WeatherForecastDaily,
   day: number
 ): number {
-  return Object.entries(skiingFactorConfig).reduce(
-    (score, [factor, config]) => {
-      if (config.importance === 'neutral' || !config.scorer) {
-        return score;
-      }
-
-      const value = weather[factor as keyof WeatherForecastDaily][day];
-      if (typeof value !== 'number') {
-        return score;
-      }
-
-      const weight = importanceWeights[config.importance];
-      return score + config.scorer({ value, weather, day, weight });
-    },
-    0
-  );
+  return scoreByConfig(skiingFactorConfig, weather, day);
 }

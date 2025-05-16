@@ -1,9 +1,9 @@
 import {
-  importanceWeights,
   WeatherForecastDaily,
   FactorConfig,
   FactorScorerArgs,
 } from '@activity-weather-ranker/shared';
+import { scoreByConfig, optimalRangeScorer } from './activity-scoring-utils';
 
 const optimalTempRange = [20, 30];
 const optimalWindSpeedRange = [5, 15];
@@ -13,12 +13,7 @@ const surfingFactorConfig: Record<keyof WeatherForecastDaily, FactorConfig> = {
   time: { importance: 'neutral' },
   temperature_2m_max: {
     importance: 'important',
-    scorer: ({ value, weight }: FactorScorerArgs) => {
-      const [minTemp, maxTemp] = optimalTempRange;
-      if (value < minTemp) return -(minTemp - value) * weight;
-      if (value > maxTemp) return -(value - maxTemp) * weight;
-      return weight * 2; // Bonus for optimal range
-    },
+    scorer: optimalRangeScorer(optimalTempRange, 2),
   },
   temperature_2m_min: {
     importance: 'nice',
@@ -30,22 +25,12 @@ const surfingFactorConfig: Record<keyof WeatherForecastDaily, FactorConfig> = {
   },
   wind_speed_10m_max: {
     importance: 'critical',
-    scorer: ({ value, weight }: FactorScorerArgs) => {
-      const [minWind, maxWind] = optimalWindSpeedRange;
-      if (value < minWind) return -(minWind - value) * weight;
-      if (value > maxWind) return -(value - maxWind) * weight;
-      return weight * 2; // Bonus for optimal wind
-    },
+    scorer: optimalRangeScorer(optimalWindSpeedRange, 2),
   },
   wind_direction_10m_dominant: { importance: 'neutral' },
   uv_index_max: {
     importance: 'nice',
-    scorer: ({ value, weight }: FactorScorerArgs) => {
-      const [minUV, maxUV] = optimalUVIndexRange;
-      if (value < minUV) return -(minUV - value) * weight;
-      if (value > maxUV) return -(value - maxUV) * weight;
-      return weight * 2; // Bonus for optimal UV
-    },
+    scorer: optimalRangeScorer(optimalUVIndexRange, 2),
   },
   snowfall_sum: {
     importance: 'critical',
@@ -61,20 +46,5 @@ export function scoreSurfing(
   weather: WeatherForecastDaily,
   day: number
 ): number {
-  return Object.entries(surfingFactorConfig).reduce(
-    (score, [factor, config]) => {
-      if (config.importance === 'neutral' || !config.scorer) {
-        return score;
-      }
-
-      const value = weather[factor as keyof WeatherForecastDaily][day];
-      if (typeof value !== 'number') {
-        return score;
-      }
-
-      const weight = importanceWeights[config.importance];
-      return score + config.scorer({ value, weather, day, weight });
-    },
-    0
-  );
+  return scoreByConfig(surfingFactorConfig, weather, day);
 }
