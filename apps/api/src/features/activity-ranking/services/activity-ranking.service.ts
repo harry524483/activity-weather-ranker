@@ -5,12 +5,12 @@ import {
 import { WeatherService } from './weather.service';
 import { activityRules } from '../rules';
 export class ActivityRankingService {
-  private weatherService: WeatherService;
   private rules: typeof activityRules;
+  private weatherService: WeatherService;
 
   constructor(weatherService: WeatherService, rules: typeof activityRules) {
-    this.weatherService = weatherService;
     this.rules = rules;
+    this.weatherService = weatherService;
   }
 
   async rankActivities(
