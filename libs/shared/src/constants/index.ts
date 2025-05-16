@@ -7,6 +7,13 @@ export const importanceWeights = {
   neutral: 0,
 } as const;
 
+export const activityTypes = [
+  'skiing',
+  'surfing',
+  'outdoor_sightseeing',
+  'indoor_sightseeing',
+] as const;
+
 export const skiingFactors: Record<keyof WeatherForecastDaily, Importance> = {
   time: 'neutral',
   temperature_2m_max: 'important',

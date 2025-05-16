@@ -11,6 +11,7 @@ import {
   GeocodingService,
   WeatherService,
   resolvers as activityRankingResolvers,
+  activityRules,
 } from '~api/activity-ranking';
 import { isCustomApiError } from '~api/common';
 import type { ApolloContext } from '~api/common';
@@ -50,7 +51,8 @@ app.use(
     context: async () => ({
       geocodingService: new GeocodingService(config.get('api.geocodingApi')),
       activityRankingService: new ActivityRankingService(
-        new WeatherService(config.get('api.weatherApi'))
+        new WeatherService(config.get('api.weatherApi')),
+        activityRules
       ),
     }),
   })
