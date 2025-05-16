@@ -12,7 +12,7 @@ import {
   WeatherService,
   resolvers as activityRankingResolvers,
   activityRules,
-} from '~api/activity-ranking';
+} from '~api/features/activity-ranking';
 import { isCustomApiError } from '~api/common';
 import type { ApolloContext } from '~api/common';
 

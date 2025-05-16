@@ -16,6 +16,8 @@
   "dependencies": {},
   "nx": {
     "name": "shared",
+    "root": "libs/shared",
+    "sourceRoot": "libs/shared/src",
     "targets": {
       "codegen": {
         "command": "npx graphql-codegen --config {projectRoot}/codegen.ts"

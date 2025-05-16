@@ -1,5 +1,13 @@
 {
   "name": "@activity-weather-ranker/frontend",
   "version": "0.0.1",
-  "private": true
+  "private": true,
+  "nx": {
+    "name": "frontend",
+    "targets": {
+      "codegen": {
+        "command": "npx graphql-codegen --config {projectRoot}/codegen.ts"
+      }
+    }
+  }
 }

@@ -3,7 +3,7 @@ import {
   GeocodingService,
   NoDailyWeatherDataError,
   NoGeocodingResultsError,
-} from '~api/activity-ranking';
+} from '~api/features/activity-ranking';
 
 export type CustomApiError = NoDailyWeatherDataError | NoGeocodingResultsError;
 

@@ -1,7 +1,7 @@
 import {
   NoDailyWeatherDataError,
   NoGeocodingResultsError,
-} from '~api/activity-ranking';
+} from '~api/features/activity-ranking';
 import type { CustomApiError } from '../types';
 
 export function isCustomApiError(error: unknown): error is CustomApiError {

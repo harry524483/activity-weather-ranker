@@ -1,9 +1,9 @@
-import NxWelcome from './nx-welcome';
+import { ActivityRanking } from '~frontend/features/activity-ranking';
 
 export function App() {
   return (
     <div>
-      <NxWelcome title="@activity-weather-ranker/frontend" />
+      <ActivityRanking />
     </div>
   );
 }

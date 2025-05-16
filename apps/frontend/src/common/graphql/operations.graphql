@@ -1,0 +1,18 @@
+query SearchGeocoding($location: String!) {
+  searchGeocoding(location: $location) {
+    id
+    name
+    latitude
+    longitude
+    country
+  }
+}
+
+query RankActivities($latitude: Float!, $longitude: Float!) {
+  rankActivities(latitude: $latitude, longitude: $longitude) {
+    date
+    activity
+    score
+    reason
+  }
+}

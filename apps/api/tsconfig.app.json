@@ -12,8 +12,7 @@
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "baseUrl": "src",
     "paths": {
-      "~api/common": ["common/index.ts"],
-      "~api/activity-ranking": ["features/activity-ranking/index.ts"]
+      "~api/*": ["*"]
     }
   },
   "include": ["src/**/*.ts"],
@@ -33,5 +32,10 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx"
+  ],
+  "references": [
+    {
+      "path": "../../libs/shared/tsconfig.lib.json"
+    }
   ]
 }
