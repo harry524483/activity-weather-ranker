@@ -2,7 +2,7 @@ import {
   WeatherForecastDaily,
   FactorConfig,
 } from '@activity-weather-ranker/shared';
-import { scoreByConfig, optimalRangeScorer } from './activity-scoring-utils';
+import { scoreByConfig, optimalRangeScorer } from './activity-scoring.utils';
 
 const comfortableTempRange = [10, 28];
 const comfortablePrecipitationRange = [0, 10];

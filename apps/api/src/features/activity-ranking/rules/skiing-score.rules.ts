@@ -3,7 +3,7 @@ import {
   FactorConfig,
   FactorScorerArgs,
 } from '@activity-weather-ranker/shared';
-import { scoreByConfig, optimalRangeScorer } from './activity-scoring-utils';
+import { scoreByConfig, optimalRangeScorer } from './activity-scoring.utils';
 
 const optimalTempRange = [-5, 2];
 

@@ -1,7 +1,7 @@
-import { scoreSkiing } from './skiing-score-rules';
-import { scoreSurfing } from './surfing-score-rules';
-import { scoreOutdoorSightseeing } from './outdoor-sightseeing-score-rules';
-import { scoreIndoorSightseeing } from './indoor-sightseeing-score-rules';
+import { scoreSkiing } from './skiing-score.rules';
+import { scoreSurfing } from './surfing-score.rules';
+import { scoreOutdoorSightseeing } from './outdoor-sightseeing-score.rules';
+import { scoreIndoorSightseeing } from './indoor-sightseeing-score.rules';
 import type {
   Activity,
   WeatherForecastDaily,

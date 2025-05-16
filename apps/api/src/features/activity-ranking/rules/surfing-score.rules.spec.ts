@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { scoreSurfing } from './surfing-score-rules.js';
+import { scoreSurfing } from './surfing-score.rules.js';
 import type { WeatherForecastDaily } from '@activity-weather-ranker/shared';
 
 const baseWeather: WeatherForecastDaily = {

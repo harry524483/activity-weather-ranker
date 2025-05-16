@@ -3,13 +3,17 @@ import {
   FactorConfig,
   FactorScorerArgs,
 } from '@activity-weather-ranker/shared';
-import { scoreByConfig, optimalRangeScorer } from './activity-scoring-utils';
+import { scoreByConfig, optimalRangeScorer } from './activity-scoring.utils';
 
-const optimalTempRange = [20, 30];
-const optimalWindSpeedRange = [5, 15];
-const optimalUVIndexRange = [3, 8];
+const optimalTempRange = [15, 25];
+const optimalTempMinRange = [10, 18];
+const optimalUVIndexRange = [2, 6];
+const optimalWindSpeedRange = [0, 15];
 
-const surfingFactorConfig: Record<keyof WeatherForecastDaily, FactorConfig> = {
+const outdoorSightseeingFactorConfig: Record<
+  keyof WeatherForecastDaily,
+  FactorConfig
+> = {
   time: { importance: 'neutral' },
   temperature_2m_max: {
     importance: 'important',
@@ -17,14 +21,14 @@ const surfingFactorConfig: Record<keyof WeatherForecastDaily, FactorConfig> = {
   },
   temperature_2m_min: {
     importance: 'nice',
-    scorer: ({ value, weight }: FactorScorerArgs) => (value > 15 ? weight : 0), // Bonus if warm nights
+    scorer: optimalRangeScorer(optimalTempMinRange, 2),
   },
   precipitation_sum: {
-    importance: 'important',
-    scorer: ({ value, weight }: FactorScorerArgs) => -value * weight, // Less rain is better
+    importance: 'critical',
+    scorer: ({ value, weight }: FactorScorerArgs) => -value * weight, // Less rain is much better
   },
   wind_speed_10m_max: {
-    importance: 'critical',
+    importance: 'important',
     scorer: optimalRangeScorer(optimalWindSpeedRange, 2),
   },
   wind_direction_10m_dominant: { importance: 'neutral' },
@@ -33,18 +37,18 @@ const surfingFactorConfig: Record<keyof WeatherForecastDaily, FactorConfig> = {
     scorer: optimalRangeScorer(optimalUVIndexRange, 2),
   },
   snowfall_sum: {
-    importance: 'critical',
+    importance: 'important',
     scorer: ({ value, weight }: FactorScorerArgs) => -value * weight, // No snow wanted
   },
   snow_depth_max: {
-    importance: 'important',
+    importance: 'nice',
     scorer: ({ value, weight }: FactorScorerArgs) => -value * weight, // No snow wanted
   },
 };
 
-export function scoreSurfing(
+export function scoreOutdoorSightseeing(
   weather: WeatherForecastDaily,
   day: number
 ): number {
-  return scoreByConfig(surfingFactorConfig, weather, day);
+  return scoreByConfig(outdoorSightseeingFactorConfig, weather, day);
 }
