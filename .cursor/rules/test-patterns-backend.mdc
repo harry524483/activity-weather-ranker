@@ -1,0 +1,64 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# Test Patterns for Backend Unit Tests (Cursor Rule)
+
+- **Test Runner**: Use `vitest` for running backend unit tests.
+- **Mocking/Spying**:
+  - Prefer using `spy` (e.g., `vi.spyOn`) over `mock`.
+  - Use `mock` only when absolutely necessary (e.g., for third-party modules or complex dependencies).
+  - Use `@golevelup/ts-jest`'s `createMock` for type-safe mocks when needed.
+- **Key Libraries**:
+  - `@golevelup/ts-jest` for mocks/spies.
+  - `vitest` as the test runner (use `vi` for spies/mocks).
+- **Test Structure**:
+  - Use `describe` blocks to group related tests.
+  - Use `beforeEach` for setup.
+  - Use `it` for individual test cases.
+- **Assertions**:
+  - Use `expect` for assertions.
+  - Assert both method calls and return values.
+- **General Style**:
+  - Keep tests clear, concise, and focused on behavior.
+  - Prefer spies for verifying calls to functions/methods.
+  - Only mock when interaction with external dependencies is required.
+  - **Follow the Arrange-Act-Assert (AAA) pattern** in all test cases:
+    - **Arrange**: Set up all necessary preconditions and inputs.
+    - **Act**: Execute the function or method under test.
+    - **Assert**: Verify that the outcome is as expected.
+- **TypeScript**:
+  - Use type-safe mocks and spies.
+  - Import types where needed for clarity.
+
+---
+
+## Example Pattern
+
+```ts
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { createMock } from '@golevelup/ts-jest';
+import type { SomeType } from 'some-lib';
+import { myFunction } from './myModule';
+
+describe('myFunction', () => {
+  let mockDep: SomeType;
+
+  beforeEach(() => {
+    mockDep = createMock<SomeType>({ ... });
+  });
+
+  it('does something', () => {
+    // Arrange
+    // ...setup code...
+
+    // Act
+    const result = myFunction(/* args */);
+
+    // Assert
+    expect(result).toBe(/* expected */);
+  });
+});
+```

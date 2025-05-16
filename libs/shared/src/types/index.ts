@@ -21,3 +21,19 @@ export type WeatherForecast = {
   longitude: number;
   daily: WeatherForecastDaily;
 };
+
+export type Importance = 'critical' | 'important' | 'nice' | 'neutral';
+
+export type FactorScorerArgs = {
+  value: number;
+  weather: WeatherForecastDaily;
+  day: number;
+  weight: number;
+};
+
+export type FactorScorer = (args: FactorScorerArgs) => number;
+
+export type FactorConfig = {
+  importance: Importance;
+  scorer?: FactorScorer;
+};

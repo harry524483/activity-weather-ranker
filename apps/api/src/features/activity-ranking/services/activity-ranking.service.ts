@@ -1,7 +1,4 @@
-import type {
-  ActivityRanking,
-  Activity,
-} from '@activity-weather-ranker/shared';
+import type { ActivityRanking } from '@activity-weather-ranker/shared';
 import { WeatherService } from './weather.service';
 export class ActivityRankingService {
   private weatherService: WeatherService;
