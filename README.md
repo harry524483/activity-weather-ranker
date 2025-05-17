@@ -1,102 +1,206 @@
 # ActivityWeatherRanker
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A monorepo project to rank activities (like surfing, skiing, sightseeing) for a given location over 7 days, based on weather forecasts. Built with Nx for modularity, Apollo GraphQL for API and client, and a shared TypeScript codebase for models.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+---
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/node?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Table of Contents
 
-## Run tasks
+- [Project Structure](#project-structure)
+- [Commands](#commands)
+- [Architecture Overview](#architecture-overview)
+- [Why Nx, Apollo Server/Client? Pros & Cons](#why-nx-apollo-serverclient-pros--cons)
+- [Trade-offs](#trade-offs)
+- [How AI Was Used](#how-ai-was-used)
+- [Useful Nx Commands](#useful-nx-commands)
 
-To run the dev server for your app, use:
+---
 
-```sh
-npx nx serve api
+## Project Structure
+
+### API
+
+```
+apps/
+  api/
+    src/
+      common/
+        graphql/              # Codegen generated resolver types
+        types/
+        utils/
+      features/
+        activity-ranking/
+          rules/              # Rules to score different activities
+          services/
+          exceptions/
+          graphql/
+            resolvers/
+
 ```
 
-To create a production bundle:
+### Frontend
 
-```sh
-npx nx build api
+```
+  frontend/
+    src/
+      app/
+      assets/
+      common/
+        graphql/              # Codegen generated query types and hooks
+      features/
+        activity-ranking/
+          components/
+          hooks/
+          pages/
+          types/
+          utils/
 ```
 
-To see all available targets to run for a project, run:
+### Shared library
 
-```sh
-npx nx show project api
+```
+libs/
+  shared/
+    src/
+      constants/
+      models/                 # GraphQL schema & codegen generated types
+      types/
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+---
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Commands
 
-## Add new projects
+### API
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+- **Run dev server:**
+  ```sh
+  npx nx serve api
+  ```
+- **Build:**
+  ```sh
+  npx nx build api
+  ```
+- **Codegen (GraphQL types):**
+  ```sh
+  npx nx run api:codegen
+  ```
 
-Use the plugin's generator to create new projects.
+### Frontend
 
-To generate a new application, use:
+- **Run dev server:**
+  ```sh
+  npx nx serve frontend
+  # or
+  npx nx dev frontend
+  ```
+- **Build:**
+  ```sh
+  npx nx build frontend
+  ```
+- **Codegen (GraphQL types):**
+  ```sh
+  npx nx run frontend:codegen
+  ```
 
-```sh
-npx nx g @nx/node:app demo
-```
+### Shared
 
-To generate a new library, use:
+- **Codegen (GraphQL types):**
+  ```sh
+  npx nx run shared:codegen
+  ```
 
-```sh
-npx nx g @nx/node:lib mylib
-```
+### Nx Graph
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+- **Visualize project graph:**
+  ```sh
+  npx nx graph
+  ```
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Set up CI!
+## Architecture Overview
 
-### Step 1
+- **API**: Apollo Server (Node.js, Express) exposes a GraphQL endpoint. Activity ranking is based on weather data and custom rules for each activity. Uses services for weather and geocoding.
+- **Frontend**: React app (Vite, Tailwind) uses Apollo Client to query the API and display ranked activities for a location over 7 days.
+- **Shared**: TypeScript models, GraphQL schema reused by both API and frontend for consistency.
+- **Nx**: Monorepo management, code sharing, and task orchestration.
 
-To connect to Nx Cloud, run the following command:
+---
 
-```sh
-npx nx connect
-```
+## Why Nx, Apollo Server/Client? Pros & Cons
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+### Nx
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+**Pros:**
 
-### Step 2
+- Modular monorepo: easy code sharing (e.g., models, scoring logic)
+- Enable targeted deployments by deploying only affected apps or services.
+- Enable independent deployments to scale apps or services individually based on traffic demands.
+- Consistent tooling for build, test, lint, codegen
+- Visualizes dependencies and project graph
 
-Use the following command to configure a CI workflow for your workspace:
+**Cons:**
 
-```sh
-npx nx g ci-workflow
-```
+- Some learning curve for Nx commands and features but AI makes it easy
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Apollo Server/Client
 
-## Install Nx Console
+**Pros:**
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+- Strong GraphQL support, type safety and wide range of node.js server integrations.
+- Codegen graphql schemas, resolvers, types and hooks
+- Apollo client normalizes the server data and manages caching
+- Provides built-in error handling and loading states
+- Offers real-time subscriptions out of the box
+- When used with NestJS, it offers wide range of advanced features and patterns
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+**Cons:**
 
-## Useful links
+- Requires extra setup for advanced features (auth, tracing, etc.) when used without NestJS
+- Apollo Client is GraphQL-specific, while alternatives like TanStack Query support multiple API types
 
-Learn more:
+---
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/node?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Trade-offs
 
-And join the Nx community:
+### API
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Logging - Pino/Bunyan
+- Tracing & Metrics - OpenTelemetry
+- Dockerfile
+- Deployment - Github actions
+- Integration testing - supertest + vitest
+
+### Frontend
+
+- Dockerfile
+- Deployment - Github actions
+- End to end testing - playwright
+
+## How AI Was Used
+
+- Used AI (Agent mode) on small & focused tasks instead doing many tasks at same time, commit changes, and iterate quickly.
+- Brainstormed implementation plans (e.g., scoring rules, testing strategy for rules) with AI.
+- Used AI to read online docs and suggest best practices for Nx, Apollo, and testing.
+- Created cursor rules for repetitive tasks e.g. commit message, unit test structure etc.
+- Used chat mode in terminal to generate commands e.g. command to run specific unit tests, nx generator commands etc.
+
+---
+
+## Useful Nx Commands
+
+- See all available targets for a project:
+  ```sh
+  npx nx show project <project>
+  ```
+- List installed plugins:
+  ```sh
+  npx nx list
+  ```
+- Run lint, test, or typecheck:
+  ```sh
+  npx nx lint <project>
+  npx nx test <project>
+  npx nx typecheck <project>
+  ```
