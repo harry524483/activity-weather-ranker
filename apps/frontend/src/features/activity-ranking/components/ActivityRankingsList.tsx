@@ -1,5 +1,5 @@
+import groupBy from 'lodash.groupby';
 import { ActivityRanking } from '@activity-weather-ranker/shared';
-import { groupRankingByDate } from '../utils/groupRankingByDate';
 
 type ActivityRankingsListProps = {
   rankings: ActivityRanking[];
@@ -10,7 +10,7 @@ const ActivityRankingsList = ({
   rankings,
   loading,
 }: ActivityRankingsListProps) => {
-  const grouped = groupRankingByDate(rankings);
+  const grouped = groupBy(rankings, 'date');
 
   Object.values(grouped).forEach((arr) =>
     arr.sort((a, b) => b.score - a.score)

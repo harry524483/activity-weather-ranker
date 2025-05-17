@@ -15,10 +15,11 @@
     "axios": "^1.6.0",
     "config": "^4.0.0",
     "graphql": "^16.11.0",
+    "lodash.debounce": "^4.0.8",
+    "lodash.groupby": "^4.6.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-select": "^5.10.1",
-    "@types/lodash.debounce": "^4.0.9"
+    "react-select": "^5.10.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.5",
@@ -45,6 +46,8 @@
     "@testing-library/react": "16.1.0",
     "@types/config": "^3.3.5",
     "@types/cors": "^2.8.18",
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/lodash.groupby": "^4.6.9",
     "@types/node": "^20.0.0",
     "@types/react": "19.0.0",
     "@types/react-dom": "19.0.0",
