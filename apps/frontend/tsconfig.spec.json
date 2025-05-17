@@ -13,7 +13,11 @@
     ],
     "jsx": "react-jsx",
     "module": "esnext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "baseUrl": "src",
+    "paths": {
+      "~frontend/*": ["*"]
+    }
   },
   "include": [
     "vite.config.ts",

@@ -11,7 +11,7 @@ export function useDebouncedGeocodingSearch(debounceMs = 1000) {
         variables: { location: inputValue },
       });
       return (
-        result.data?.searchGeocoding?.map((item: any) => ({
+        result.data?.searchGeocoding?.map((item) => ({
           value: { latitude: item.latitude, longitude: item.longitude },
           label: `${item.name} - ${item.country}`,
         })) || []

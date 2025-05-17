@@ -1,18 +1,18 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: true
 ---
 
-# Test Patterns for Backend Unit Tests (Cursor Rule)
+# Test Patterns for Unit Tests (Cursor Rule)
 
-- **Test Runner**: Use `vitest` for running backend unit tests.
+- **Test Runner**: Use `vitest` for running unit tests.
 - **Mocking/Spying**:
   - Prefer using `spy` (e.g., `vi.spyOn`) over `mock`.
   - Use `mock` only when absolutely necessary (e.g., for third-party modules or complex dependencies).
-  - Use `@golevelup/ts-jest`'s `createMock` for type-safe mocks when needed.
+  - Use `@golevelup/ts-vitest`'s `createMock` for type-safe mocks when needed.
 - **Key Libraries**:
-  - `@golevelup/ts-jest` for mocks/spies.
+  - `@golevelup/ts-vitest` for mocks/spies.
   - `vitest` as the test runner (use `vi` for spies/mocks).
 - **Test Structure**:
   - Use `describe` blocks to group related tests.
@@ -39,7 +39,7 @@ alwaysApply: true
 
 ```ts
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { createMock } from '@golevelup/ts-jest';
+import { createMock } from '@golevelup/ts-vitest';
 import type { SomeType } from 'some-lib';
 import { myFunction } from './myModule';
 
